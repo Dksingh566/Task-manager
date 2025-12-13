@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DailyTask Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <div class="header-content">
+        <h1>📊 DailyTask Dashboard</h1>
+        <div class="header-actions">
+            <input type="date" id="taskDate">
+            <button id="clearAll">Clear All Data</button>
+        </div>
+    </div>
+</header>
+
+<section class="input-section">
+    <div class="input-grid">
+        <div>
+            <input id="taskType" placeholder="Task Type (e.g., Study, Work)">
+        </div>
+        <div>
+            <input id="taskName" placeholder="Task Name (e.g., Math Assignment)">
+        </div>
+        <div>
+            <div class="time-label">⏰ Start Time</div>
+            <div class="time-inputs">
+                <input id="sh" placeholder="HH" maxlength="2" min="1" max="12">
+                <input id="sm" placeholder="MM" maxlength="2" min="0" max="59">
+                <select id="sap"><option>AM</option><option>PM</option></select>
+            </div>
+        </div>
+        <div>
+            <div class="time-label">🏁 End Time</div>
+            <div class="time-inputs">
+                <input id="eh" placeholder="HH" maxlength="2" min="1" max="12">
+                <input id="em" placeholder="MM" maxlength="2" min="0" max="59">
+                <select id="eap"><option>AM</option><option>PM</option></select>
+            </div>
+        </div>
+    </div>
+    <button id="addTask">➕ Add Task</button>
+</section>
+
+<section class="dashboard-grid">
+
+    <div class="panel">
+        <h2>📝 Active Tasks</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Task</th>
+                    <th>Total</th>
+                    <th>✔</th>
+                    <th>❌</th>
+                </tr>
+            </thead>
+            <tbody id="taskList"></tbody>
+        </table>
+    </div>
+
+    <div class="panel">
+        <div class="panel-header">
+            <h2>📈 Daily Productivity</h2>
+            <button id="clearDaily">Clear</button>
+        </div>
+        <div id="dailyBox"></div>
+    </div>
+
+    <div class="panel">
+        <h2>📅 Weekly Productivity</h2>
+        <div id="weeklyBox"></div>
+    </div>
+
+</section>
+
+<script src="script.js"></script>
+</body>
+</html>
