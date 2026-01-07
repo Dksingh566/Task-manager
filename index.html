@@ -2,83 +2,254 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>DailyTask Dashboard</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <title>DailyTask Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f0f4ff',
+                            100: '#e0e8ff',
+                            200: '#c7d4fe',
+                            300: '#a3b6fc',
+                            400: '#7c91f8',
+                            500: '#667eea',
+                            600: '#4f5dd2',
+                            700: '#424aa3',
+                            800: '#383f82',
+                            900: '#313666',
+                        },
+                        secondary: {
+                            50: '#f5f0ff',
+                            100: '#ede3ff',
+                            200: '#dcc8ff',
+                            300: '#c4a1ff',
+                            400: '#a670ff',
+                            500: '#764ba2',
+                            600: '#5d3582',
+                            700: '#4a2866',
+                            800: '#3d2152',
+                            900: '#331c44',
+                        }
+                    },
+                    animation: {
+                        'slide-down': 'slideDown 0.5s ease',
+                        'fade-in-up': 'fadeInUp 0.6s ease',
+                        'slide-in': 'slideIn 0.5s ease',
+                    },
+                    keyframes: {
+                        slideDown: {
+                            '0%': { transform: 'translateY(-100%)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        fadeInUp: {
+                            '0%': { transform: 'translateY(30px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        slideIn: {
+                            '0%': { transform: 'translateX(-20px)', opacity: '0' },
+                            '100%': { transform: 'translateX(0)', opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #5a6fd6 0%, #6a4190 100%);
+        }
+    </style>
 </head>
-<body>
-
-<header>
-    <div class="header-content">
-        <h1>📊 DailyTask Dashboard</h1>
-        <div class="header-actions">
-            <input type="date" id="taskDate">
-            <button id="clearAll">Clear All Data</button>
-        </div>
-    </div>
-</header>
-
-<section class="input-section">
-    <div class="input-grid">
-        <div>
-            <input id="taskType" placeholder="Task Type (e.g., Study, Work)">
-        </div>
-        <div>
-            <input id="taskName" placeholder="Task Name (e.g., Math Assignment)">
-        </div>
-        <div>
-            <div class="time-label">⏰ Start Time</div>
-            <div class="time-inputs">
-                <input id="sh" placeholder="HH" maxlength="2" min="1" max="12">
-                <input id="sm" placeholder="MM" maxlength="2" min="0" max="59">
-                <select id="sap"><option>AM</option><option>PM</option></select>
+<body class="bg-gradient-to-br from-primary-500 to-secondary-500 min-h-screen pb-8">
+    
+    <!-- Header -->
+    <header class="bg-white/95 backdrop-blur-sm shadow-lg sticky top-0 z-50 animate-slide-down">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+                <h1 class="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-primary-500 to-secondary-500 bg-clip-text text-transparent">
+                    📊 DailyTask Dashboard
+                </h1>
+                <div class="flex flex-col sm:flex-row items-center gap-3">
+                    <input 
+                        type="date" 
+                        id="taskDate"
+                        class="px-4 py-2 border-2 border-primary-100 rounded-xl text-sm focus:outline-none focus:border-primary-400 focus:ring-4 focus:ring-primary-100/50 transition-all duration-300 bg-white"
+                    >
+                    <button 
+                        id="clearAll"
+                        class="w-full sm:w-auto px-4 py-2 bg-gradient-to-r from-pink-400 to-red-500 text-white rounded-xl font-semibold hover:from-pink-500 hover:to-red-600 hover:shadow-lg hover:shadow-pink-500/30 transform hover:-translate-y-0.5 transition-all duration-300"
+                    >
+                        Clear All
+                    </button>
+                </div>
             </div>
         </div>
-        <div>
-            <div class="time-label">🏁 End Time</div>
-            <div class="time-inputs">
-                <input id="eh" placeholder="HH" maxlength="2" min="1" max="12">
-                <input id="em" placeholder="MM" maxlength="2" min="0" max="59">
-                <select id="eap"><option>AM</option><option>PM</option></select>
+    </header>
+
+    <!-- Input Section -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 sm:mt-8">
+        <div class="bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl p-4 sm:p-6 lg:p-8 animate-fade-in-up">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                <!-- Task Type -->
+                <div>
+                    <label class="block text-sm font-semibold text-secondary-700 mb-2">📁 Task Type</label>
+                    <input 
+                        id="taskType" 
+                        placeholder="Study, Work, Exercise..."
+                        class="w-full px-4 py-3 border-2 border-primary-100 rounded-xl focus:outline-none focus:border-primary-400 focus:ring-4 focus:ring-primary-100/50 transition-all duration-300"
+                    >
+                </div>
+                
+                <!-- Task Name -->
+                <div>
+                    <label class="block text-sm font-semibold text-secondary-700 mb-2">📝 Task Name</label>
+                    <input 
+                        id="taskName" 
+                        placeholder="Math Assignment, Meeting..."
+                        class="w-full px-4 py-3 border-2 border-primary-100 rounded-xl focus:outline-none focus:border-primary-400 focus:ring-4 focus:ring-primary-100/50 transition-all duration-300"
+                    >
+                </div>
+                
+                <!-- Start Time -->
+                <div>
+                    <label class="block text-sm font-semibold text-secondary-700 mb-2">⏰ Start Time</label>
+                    <div class="flex items-center gap-2">
+                        <input 
+                            id="sh" 
+                            placeholder="HH" 
+                            maxlength="2"
+                            class="w-14 sm:w-16 px-3 py-3 text-center border-2 border-primary-100 rounded-xl focus:outline-none focus:border-primary-400 focus:ring-4 focus:ring-primary-100/50 transition-all duration-300"
+                        >
+                        <span class="text-secondary-500 font-bold">:</span>
+                        <input 
+                            id="sm" 
+                            placeholder="MM" 
+                            maxlength="2"
+                            class="w-14 sm:w-16 px-3 py-3 text-center border-2 border-primary-100 rounded-xl focus:outline-none focus:border-primary-400 focus:ring-4 focus:ring-primary-100/50 transition-all duration-300"
+                        >
+                        <select 
+                            id="sap"
+                            class="w-16 sm:w-18 px-2 py-3 border-2 border-primary-100 rounded-xl focus:outline-none focus:border-primary-400 transition-all duration-300 bg-white"
+                        >
+                            <option>AM</option>
+                            <option>PM</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <!-- End Time -->
+                <div>
+                    <label class="block text-sm font-semibold text-secondary-700 mb-2">🏁 End Time</label>
+                    <div class="flex items-center gap-2">
+                        <input 
+                            id="eh" 
+                            placeholder="HH" 
+                            maxlength="2"
+                            class="w-14 sm:w-16 px-3 py-3 text-center border-2 border-primary-100 rounded-xl focus:outline-none focus:border-primary-400 focus:ring-4 focus:ring-primary-100/50 transition-all duration-300"
+                        >
+                        <span class="text-secondary-500 font-bold">:</span>
+                        <input 
+                            id="em" 
+                            placeholder="MM" 
+                            maxlength="2"
+                            class="w-14 sm:w-16 px-3 py-3 text-center border-2 border-primary-100 rounded-xl focus:outline-none focus:border-primary-400 focus:ring-4 focus:ring-primary-100/50 transition-all duration-300"
+                        >
+                        <select 
+                            id="eap"
+                            class="w-16 sm:w-18 px-2 py-3 border-2 border-primary-100 rounded-xl focus:outline-none focus:border-primary-400 transition-all duration-300 bg-white"
+                        >
+                            <option>AM</option>
+                            <option>PM</option>
+                        </select>
+                    </div>
+                </div>
             </div>
+            
+            <button 
+                id="addTask"
+                class="w-full py-4 bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-xl font-bold text-lg hover:from-primary-600 hover:to-secondary-600 hover:shadow-lg hover:shadow-primary-500/30 transform hover:-translate-y-0.5 transition-all duration-300"
+            >
+                ➕ Add Task
+            </button>
         </div>
-    </div>
-    <button id="addTask">➕ Add Task</button>
-</section>
+    </section>
 
-<section class="dashboard-grid">
+    <!-- Dashboard Grid -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 sm:mt-8">
+        <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
+            
+            <!-- Active Tasks Panel -->
+            <div class="bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl p-4 sm:p-6 animate-fade-in-up hover:shadow-2xl transition-shadow duration-300">
+                <h2 class="text-xl font-bold text-secondary-700 mb-4 flex items-center gap-2">
+                    📝 Active Tasks
+                </h2>
+                <div class="overflow-x-auto">
+                    <table class="w-full min-w-[300px]">
+                        <thead class="bg-gradient-to-r from-primary-500 to-secondary-500 text-white">
+                            <tr>
+                                <th class="px-3 py-3 text-left text-xs sm:text-sm font-semibold rounded-l-xl">Type</th>
+                                <th class="px-3 py-3 text-left text-xs sm:text-sm font-semibold">Task</th>
+                                <th class="px-3 py-3 text-left text-xs sm:text-sm font-semibold">Total</th>
+                                <th class="px-3 py-3 text-center text-xs sm:text-sm font-semibold">✔</th>
+                                <th class="px-3 py-3 text-center text-xs sm:text-sm font-semibold rounded-r-xl">❌</th>
+                            </tr>
+                        </thead>
+                        <tbody id="taskList" class="divide-y divide-primary-100">
+                            <!-- Tasks will be rendered here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
-    <div class="panel">
-        <h2>📝 Active Tasks</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Type</th>
-                    <th>Task</th>
-                    <th>Total</th>
-                    <th>✔</th>
-                    <th>❌</th>
-                </tr>
-            </thead>
-            <tbody id="taskList"></tbody>
-        </table>
-    </div>
+            <!-- Daily Productivity Panel -->
+            <div class="bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl p-4 sm:p-6 animate-fade-in-up hover:shadow-2xl transition-shadow duration-300 lg:animation-delay-100">
+                <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
+                    <h2 class="text-xl font-bold text-secondary-700 flex items-center gap-2">
+                        📈 Daily Productivity
+                    </h2>
+                    <button 
+                        id="clearDaily"
+                        class="px-3 py-1.5 sm:px-4 sm:py-2 bg-gradient-to-r from-pink-400 to-red-500 text-white rounded-lg sm:rounded-xl text-sm font-semibold hover:from-pink-500 hover:to-red-600 hover:shadow-lg hover:shadow-pink-500/30 transform hover:-translate-y-0.5 transition-all duration-300"
+                    >
+                        Clear
+                    </button>
+                </div>
+                <div id="dailyBox" class="space-y-2">
+                    <!-- Daily stats will be rendered here -->
+                </div>
+            </div>
 
-    <div class="panel">
-        <div class="panel-header">
-            <h2>📈 Daily Productivity</h2>
-            <button id="clearDaily">Clear</button>
+            <!-- Weekly Productivity Panel -->
+            <div class="bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl p-4 sm:p-6 animate-fade-in-up hover:shadow-2xl transition-shadow duration-300 lg:animation-delay-200">
+                <h2 class="text-xl font-bold text-secondary-700 mb-4 flex items-center gap-2">
+                    📅 Weekly Productivity
+                </h2>
+                <div id="weeklyBox" class="space-y-3">
+                    <!-- Weekly stats will be rendered here -->
+                </div>
+            </div>
+
         </div>
-        <div id="dailyBox"></div>
-    </div>
+    </section>
 
-    <div class="panel">
-        <h2>📅 Weekly Productivity</h2>
-        <div id="weeklyBox"></div>
-    </div>
-
-</section>
-
-<script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
+
