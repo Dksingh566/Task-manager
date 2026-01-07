@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="system">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
@@ -39,6 +40,10 @@
                         'slide-down': 'slideDown 0.5s ease',
                         'fade-in-up': 'fadeInUp 0.6s ease',
                         'slide-in': 'slideIn 0.5s ease',
+                        'pulse-slow': 'pulse 3s infinite',
+                        'bounce-soft': 'bounceSoft 0.5s ease',
+                        'scale-in': 'scaleIn 0.3s ease',
+                        'shimmer': 'shimmer 2s infinite',
                     },
                     keyframes: {
                         slideDown: {
@@ -52,32 +57,293 @@
                         slideIn: {
                             '0%': { transform: 'translateX(-20px)', opacity: '0' },
                             '100%': { transform: 'translateX(0)', opacity: '1' },
+                        },
+                        bounceSoft: {
+                            '0%, 100%': { transform: 'scale(1)' },
+                            '50%': { transform: 'scale(1.05)' },
+                        },
+                        scaleIn: {
+                            '0%': { transform: 'scale(0.8)', opacity: '0' },
+                            '100%': { transform: 'scale(1)', opacity: '1' },
+                        },
+                        shimmer: {
+                            '0%': { backgroundPosition: '-200% 0' },
+                            '100%': { backgroundPosition: '200% 0' },
                         }
+                    },
+                    boxShadow: {
+                        'glow': '0 0 20px rgba(102, 126, 234, 0.4)',
+                        'glow-lg': '0 0 30px rgba(102, 126, 234, 0.5)',
+                        'inner-glow': 'inset 0 0 20px rgba(102, 126, 234, 0.1)',
                     }
                 }
             }
         }
     </script>
-   
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --glass-bg: rgba(255, 255, 255, 0.95);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text-primary: #1f2937;
+            --text-secondary: #4b5563;
+            --card-bg: #ffffff;
+            --input-bg: #ffffff;
+            --input-border: #e5e7eb;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] {
+            --bg-gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            --glass-bg: rgba(30, 30, 50, 0.95);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --card-bg: #1e1e3f;
+            --input-bg: #252547;
+            --input-border: #374151;
+            --shadow-color: rgba(0, 0, 0, 0.3);
+        }
+
+        [data-theme="light"] {
+            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --glass-bg: rgba(255, 255, 255, 0.95);
+            --glass-border: rgba(255, 255, 255, 0.2);
+            --text-primary: #1f2937;
+            --text-secondary: #4b5563;
+            --card-bg: #ffffff;
+            --input-bg: #ffffff;
+            --input-border: #e5e7eb;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            background: var(--bg-gradient);
+            transition: background 0.5s ease;
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 20px 40px var(--shadow-color);
+        }
+
+        .theme-transition {
+            transition: all 0.3s ease;
+        }
+
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #5a6fd6 0%, #6a4190 100%);
+        }
+
+        /* Animation delay classes */
+        .animation-delay-100 { animation-delay: 0.1s; }
+        .animation-delay-200 { animation-delay: 0.2s; }
+        .animation-delay-300 { animation-delay: 0.3s; }
+
+        /* Table styles enhancement */
+        tbody tr {
+            transition: all 0.3s ease;
+        }
+
+        tbody tr:hover {
+            background-color: var(--input-bg);
+            transform: scale(1.01);
+        }
+
+        /* Empty state styling */
+        .empty-state {
+            text-align: center;
+            padding: 2rem 1rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .empty-state::before {
+            content: "📭";
+            display: block;
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Interactive buttons */
+        .interactive-btn {
+            transition: all 0.3s ease;
+        }
+
+        .interactive-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px var(--shadow-color);
+        }
+
+        .interactive-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Task completion animation */
+        @keyframes taskComplete {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); background-color: #10b981; }
+            100% { transform: scale(1); }
+        }
+
+        .task-complete {
+            animation: taskComplete 0.5s ease;
+        }
+
+        /* Delete animation */
+        @keyframes taskDelete {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(0.8); opacity: 0; }
+        }
+
+        .task-delete {
+            animation: taskDelete 0.3s ease forwards;
+        }
+
+        /* Shimmer effect for loading */
+        .shimmer {
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+        }
+
+        /* Focus glow effect */
+        input:focus, select:focus {
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+
+        /* Toggle switch styles */
+        .toggle-switch {
+            position: relative;
+            width: 60px;
+            height: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch:hover {
+            box-shadow: 0 0 15px rgba(102, 126, 234, 0.5);
+        }
+
+        .toggle-switch::before {
+            content: '';
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            top: 3px;
+            left: 3px;
+            transition: all 0.3s ease;
+        }
+
+        .toggle-switch.dark {
+            background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 100%);
+        }
+
+        .toggle-switch.dark::before {
+            transform: translateX(30px);
+        }
+
+        /* Priority indicators */
+        .priority-high {
+            border-left: 4px solid #ef4444;
+        }
+
+        .priority-medium {
+            border-left: 4px solid #f59e0b;
+        }
+
+        .priority-low {
+            border-left: 4px solid #10b981;
+        }
+
+        /* Stats card hover effect */
+        .stats-card {
+            transition: all 0.3s ease;
+        }
+
+        .stats-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 30px var(--shadow-color);
+        }
+
+        /* Toast notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 12px 24px;
+            background: var(--card-bg);
+            color: var(--text-primary);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px var(--shadow-color);
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+    </style>
 </head>
-<body class="bg-gradient-to-br from-primary-500 to-secondary-500 min-h-screen pb-8">
+<body class="bg-gradient-to-br from-primary-500 to-secondary-500 min-h-screen pb-8 theme-transition">
     
     <!-- Header -->
-    <header class="bg-white/95 backdrop-blur-sm shadow-lg sticky top-0 z-50 animate-slide-down">
+    <header class="glass-card shadow-lg sticky top-0 z-50 animate-slide-down">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
-                <h1 class="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-primary-500 to-secondary-500 bg-clip-text text-transparent">
+                <h1 class="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-primary-500 to-secondary-500 bg-clip-text text-transparent interactive-btn cursor-pointer" onclick="showToast('Welcome to TaskHub! 🎉')">
                     📊 TaskHub
                 </h1>
-                <div class="flex flex-col sm:flex-row items-center gap-3">
+                
+                <div class="flex flex-wrap items-center gap-3">
+                    <!-- Theme Toggle -->
+                    <div class="flex items-center gap-2 bg-gray-100 dark:bg-gray-800 rounded-lg p-1 theme-transition">
+                        <button onclick="setTheme('light')" class="theme-btn px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-300" id="lightBtn">
+                            ☀️
+                        </button>
+                        <button onclick="setTheme('system')" class="theme-btn px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-300" id="systemBtn">
+                            💻
+                        </button>
+                        <button onclick="setTheme('dark')" class="theme-btn px-3 py-1.5 rounded-md text-sm font-medium transition-all duration-300" id="darkBtn">
+                            🌙
+                        </button>
+                    </div>
+                    
                     <input 
                         type="date" 
                         id="taskDate"
-                        class="px-4 py-2 border-2 border-primary-100 rounded-xl text-sm focus:outline-none focus:border-primary-400 focus:ring-4 focus:ring-primary-100/50 transition-all duration-300 bg-white"
+                        class="px-4 py-2 border-2 border-primary-100 rounded-xl text-sm focus:outline-none focus:border-primary-400 focus:ring-4 focus:ring-primary-100/50 transition-all duration-300 bg-white dark:bg-gray-800 dark:border-gray-700 dark:text-white theme-transition"
                     >
                     <button 
                         id="clearAll"
-                        class="w-full sm:w-auto px-4 py-2 bg-gradient-to-r from-pink-400 to-red-500 text-white rounded-xl font-semibold hover:from-pink-500 hover:to-red-600 hover:shadow-lg hover:shadow-pink-500/30 transform hover:-translate-y-0.5 transition-all duration-300"
+                        class="interactive-btn px-4 py-2 bg-gradient-to-r from-pink-400 to-red-500 text-white rounded-xl font-semibold hover:from-pink-500 hover:to-red-600 hover:shadow-lg hover:shadow-pink-500/30"
                     >
                         Clear All
                     </button>
@@ -88,48 +354,48 @@
 
     <!-- Input Section -->
     <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 sm:mt-8">
-        <div class="bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl p-4 sm:p-6 lg:p-8 animate-fade-in-up">
+        <div class="glass-card rounded-2xl shadow-xl p-4 sm:p-6 lg:p-8 animate-fade-in-up">
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
                 <!-- Task Type -->
                 <div>
-                    <label class="block text-sm font-semibold text-secondary-700 mb-2">📁 Task Type</label>
+                    <label class="block text-sm font-semibold text-secondary-700 dark:text-gray-300 mb-2">📁 Task Type</label>
                     <input 
                         id="taskType" 
                         placeholder="Study, Work, Exercise..."
-                        class="w-full px-4 py-3 border-2 border-primary-100 rounded-xl focus:outline-none focus:border-primary-400 focus:ring-4 focus:ring-primary-100/50 transition-all duration-300"
+                        class="w-full px-4 py-3 border-2 border-primary-100 dark:border-gray-700 rounded-xl focus:outline-none focus:border-primary-400 focus:ring-4 focus:ring-primary-100/50 transition-all duration-300 bg-white dark:bg-gray-800 dark:text-white theme-transition"
                     >
                 </div>
                 
                 <!-- Task Name -->
                 <div>
-                    <label class="block text-sm font-semibold text-secondary-700 mb-2">📝 Task Name</label>
+                    <label class="block text-sm font-semibold text-secondary-700 dark:text-gray-300 mb-2">📝 Task Name</label>
                     <input 
                         id="taskName" 
                         placeholder="Math Assignment, Meeting..."
-                        class="w-full px-4 py-3 border-2 border-primary-100 rounded-xl focus:outline-none focus:border-primary-400 focus:ring-4 focus:ring-primary-100/50 transition-all duration-300"
+                        class="w-full px-4 py-3 border-2 border-primary-100 dark:border-gray-700 rounded-xl focus:outline-none focus:border-primary-400 focus:ring-4 focus:ring-primary-100/50 transition-all duration-300 bg-white dark:bg-gray-800 dark:text-white theme-transition"
                     >
                 </div>
                 
                 <!-- Start Time -->
                 <div>
-                    <label class="block text-sm font-semibold text-secondary-700 mb-2">⏰ Start Time</label>
+                    <label class="block text-sm font-semibold text-secondary-700 dark:text-gray-300 mb-2">⏰ Start Time</label>
                     <div class="flex items-center gap-2">
                         <input 
                             id="sh" 
                             placeholder="HH" 
                             maxlength="2"
-                            class="w-14 sm:w-16 px-3 py-3 text-center border-2 border-primary-100 rounded-xl focus:outline-none focus:border-primary-400 focus:ring-4 focus:ring-primary-100/50 transition-all duration-300"
+                            class="w-14 sm:w-16 px-3 py-3 text-center border-2 border-primary-100 dark:border-gray-700 rounded-xl focus:outline-none focus:border-primary-400 focus:ring-4 focus:ring-primary-100/50 transition-all duration-300 bg-white dark:bg-gray-800 dark:text-white theme-transition"
                         >
-                        <span class="text-secondary-500 font-bold">:</span>
+                        <span class="text-secondary-500 dark:text-gray-400 font-bold">:</span>
                         <input 
                             id="sm" 
                             placeholder="MM" 
                             maxlength="2"
-                            class="w-14 sm:w-16 px-3 py-3 text-center border-2 border-primary-100 rounded-xl focus:outline-none focus:border-primary-400 focus:ring-4 focus:ring-primary-100/50 transition-all duration-300"
+                            class="w-14 sm:w-16 px-3 py-3 text-center border-2 border-primary-100 dark:border-gray-700 rounded-xl focus:outline-none focus:border-primary-400 focus:ring-4 focus:ring-primary-100/50 transition-all duration-300 bg-white dark:bg-gray-800 dark:text-white theme-transition"
                         >
                         <select 
                             id="sap"
-                            class="w-16 sm:w-18 px-2 py-3 border-2 border-primary-100 rounded-xl focus:outline-none focus:border-primary-400 transition-all duration-300 bg-white"
+                            class="w-16 sm:w-18 px-2 py-3 border-2 border-primary-100 dark:border-gray-700 rounded-xl focus:outline-none focus:border-primary-400 transition-all duration-300 bg-white dark:bg-gray-800 dark:text-white theme-transition"
                         >
                             <option>AM</option>
                             <option>PM</option>
@@ -139,24 +405,24 @@
                 
                 <!-- End Time -->
                 <div>
-                    <label class="block text-sm font-semibold text-secondary-700 mb-2">🏁 End Time</label>
+                    <label class="block text-sm font-semibold text-secondary-700 dark:text-gray-300 mb-2">🏁 End Time</label>
                     <div class="flex items-center gap-2">
                         <input 
                             id="eh" 
                             placeholder="HH" 
                             maxlength="2"
-                            class="w-14 sm:w-16 px-3 py-3 text-center border-2 border-primary-100 rounded-xl focus:outline-none focus:border-primary-400 focus:ring-4 focus:ring-primary-100/50 transition-all duration-300"
+                            class="w-14 sm:w-16 px-3 py-3 text-center border-2 border-primary-100 dark:border-gray-700 rounded-xl focus:outline-none focus:border-primary-400 focus:ring-4 focus:ring-primary-100/50 transition-all duration-300 bg-white dark:bg-gray-800 dark:text-white theme-transition"
                         >
-                        <span class="text-secondary-500 font-bold">:</span>
+                        <span class="text-secondary-500 dark:text-gray-400 font-bold">:</span>
                         <input 
                             id="em" 
                             placeholder="MM" 
                             maxlength="2"
-                            class="w-14 sm:w-16 px-3 py-3 text-center border-2 border-primary-100 rounded-xl focus:outline-none focus:border-primary-400 focus:ring-4 focus:ring-primary-100/50 transition-all duration-300"
+                            class="w-14 sm:w-16 px-3 py-3 text-center border-2 border-primary-100 dark:border-gray-700 rounded-xl focus:outline-none focus:border-primary-400 focus:ring-4 focus:ring-primary-100/50 transition-all duration-300 bg-white dark:bg-gray-800 dark:text-white theme-transition"
                         >
                         <select 
                             id="eap"
-                            class="w-16 sm:w-18 px-2 py-3 border-2 border-primary-100 rounded-xl focus:outline-none focus:border-primary-400 transition-all duration-300 bg-white"
+                            class="w-16 sm:w-18 px-2 py-3 border-2 border-primary-100 dark:border-gray-700 rounded-xl focus:outline-none focus:border-primary-400 transition-all duration-300 bg-white dark:bg-gray-800 dark:text-white theme-transition"
                         >
                             <option>AM</option>
                             <option>PM</option>
@@ -167,7 +433,7 @@
             
             <button 
                 id="addTask"
-                class="w-full py-4 bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-xl font-bold text-lg hover:from-primary-600 hover:to-secondary-600 hover:shadow-lg hover:shadow-primary-500/30 transform hover:-translate-y-0.5 transition-all duration-300"
+                class="interactive-btn w-full py-4 bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-xl font-bold text-lg hover:from-primary-600 hover:to-secondary-600 hover:shadow-lg hover:shadow-primary-500/30"
             >
                 ➕ Add Task
             </button>
@@ -179,9 +445,10 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
             
             <!-- Active Tasks Panel -->
-            <div class="bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl p-4 sm:p-6 animate-fade-in-up hover:shadow-2xl transition-shadow duration-300">
-                <h2 class="text-xl font-bold text-secondary-700 mb-4 flex items-center gap-2">
+            <div class="glass-card rounded-2xl shadow-xl p-4 sm:p-6 animate-fade-in-up hover:shadow-2xl transition-shadow duration-300">
+                <h2 class="text-xl font-bold text-secondary-700 dark:text-gray-200 mb-4 flex items-center gap-2">
                     📝 Active Tasks
+                    <span id="activeTaskCount" class="text-sm bg-primary-500 text-white px-2 py-1 rounded-full">0</span>
                 </h2>
                 <div class="overflow-x-auto">
                     <table class="w-full min-w-[300px]">
@@ -194,7 +461,7 @@
                                 <th class="px-3 py-3 text-center text-xs sm:text-sm font-semibold rounded-r-xl">❌</th>
                             </tr>
                         </thead>
-                        <tbody id="taskList" class="divide-y divide-primary-100">
+                        <tbody id="taskList" class="divide-y divide-primary-100 dark:divide-gray-700">
                             <!-- Tasks will be rendered here -->
                         </tbody>
                     </table>
@@ -202,14 +469,14 @@
             </div>
 
             <!-- Daily Productivity Panel -->
-            <div class="bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl p-4 sm:p-6 animate-fade-in-up hover:shadow-2xl transition-shadow duration-300 lg:animation-delay-100">
+            <div class="glass-card rounded-2xl shadow-xl p-4 sm:p-6 animate-fade-in-up hover:shadow-2xl transition-shadow duration-300 lg:animation-delay-100">
                 <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4">
-                    <h2 class="text-xl font-bold text-secondary-700 flex items-center gap-2">
+                    <h2 class="text-xl font-bold text-secondary-700 dark:text-gray-200 flex items-center gap-2">
                         📈 Daily Productivity
                     </h2>
                     <button 
                         id="clearDaily"
-                        class="px-3 py-1.5 sm:px-4 sm:py-2 bg-gradient-to-r from-pink-400 to-red-500 text-white rounded-lg sm:rounded-xl text-sm font-semibold hover:from-pink-500 hover:to-red-600 hover:shadow-lg hover:shadow-pink-500/30 transform hover:-translate-y-0.5 transition-all duration-300"
+                        class="interactive-btn px-3 py-1.5 sm:px-4 sm:py-2 bg-gradient-to-r from-pink-400 to-red-500 text-white rounded-lg sm:rounded-xl text-sm font-semibold hover:from-pink-500 hover:to-red-600 hover:shadow-lg hover:shadow-pink-500/30"
                     >
                         Clear
                     </button>
@@ -220,8 +487,8 @@
             </div>
 
             <!-- Weekly Productivity Panel -->
-            <div class="bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl p-4 sm:p-6 animate-fade-in-up hover:shadow-2xl transition-shadow duration-300 lg:animation-delay-200">
-                <h2 class="text-xl font-bold text-secondary-700 mb-4 flex items-center gap-2">
+            <div class="glass-card rounded-2xl shadow-xl p-4 sm:p-6 animate-fade-in-up hover:shadow-2xl transition-shadow duration-300 lg:animation-delay-200">
+                <h2 class="text-xl font-bold text-secondary-700 dark:text-gray-200 mb-4 flex items-center gap-2">
                     📅 Weekly Productivity
                 </h2>
                 <div id="weeklyBox" class="space-y-3">
@@ -232,7 +499,81 @@
         </div>
     </section>
 
+    <!-- Toast Notification -->
+    <div id="toast" class="toast glass-card"></div>
+
     <script src="script.js"></script>
+    <script>
+        // Theme Management
+        const html = document.documentElement;
+        
+        function setTheme(theme) {
+            html.setAttribute('data-theme', theme);
+            localStorage.setItem('theme', theme);
+            updateThemeButtons(theme);
+            
+            // Show toast notification
+            const themeMessages = {
+                'light': '☀️ Light mode activated!',
+                'dark': '🌙 Dark mode activated!',
+                'system': '💻 Following system preference!'
+            };
+            showToast(themeMessages[theme]);
+        }
+
+        function updateThemeButtons(activeTheme) {
+            const buttons = document.querySelectorAll('.theme-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('bg-white', 'shadow-md', 'text-primary-600');
+                btn.classList.add('text-gray-600', 'dark:text-gray-400');
+            });
+
+            const activeBtn = document.getElementById(activeTheme + 'Btn');
+            if (activeBtn) {
+                activeBtn.classList.add('bg-white', 'shadow-md', 'text-primary-600');
+                activeBtn.classList.remove('text-gray-600', 'dark:text-gray-400');
+            }
+        }
+
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'system';
+            setTheme(savedTheme);
+        }
+
+        // Toast Notification
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Enhanced Toast for actions
+        function showActionToast(action, taskName) {
+            const messages = {
+                'add': `✅ Task "${taskName}" added successfully!`,
+                'complete': `🎉 Task "${taskName}" completed! Great job!`,
+                'delete': `🗑️ Task "${taskName}" deleted`,
+                'clear': '🧹 All data cleared!'
+            };
+            showToast(messages[action] || message);
+        }
+
+        // Initialize theme on load
+        initTheme();
+
+        // Add event listener for system theme changes
+        if (window.matchMedia) {
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
+                if (localStorage.getItem('theme') === 'system') {
+                    setTheme('system');
+                }
+            });
+        }
+    </script>
 </body>
 </html>
 
