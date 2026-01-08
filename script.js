@@ -264,7 +264,15 @@ function calcMinutes(){
     const h2 = convert(eh.value, eap.value);
     const m1 = parseInt(sm.value) || 0;
     const m2 = parseInt(em.value) || 0;
-    return (h2*60 + m2) - (h1*60 + m1);
+    
+    let totalMinutes = (h2*60 + m2) - (h1*60 + m1);
+    
+    // Handle overnight tasks (end time before start time)
+    if (totalMinutes < 0) {
+        totalMinutes += 24 * 60; // Add 24 hours (1440 minutes)
+    }
+    
+    return totalMinutes;
 }
 
 function convert(h, ap){
